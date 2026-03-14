@@ -1,33 +1,36 @@
 import { router } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Form Validation App</Text>
-      <Text style={styles.subtitle}>Choose a form to open</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#f5f7fb" }}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Form Validation App</Text>
+        <Text style={styles.subtitle}>Choose a form to open</Text>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => router.push("/employee-form")}
-      >
-        <Text style={styles.buttonText}>Open Employee Form</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => router.push("/employee-form")}
+        >
+          <Text style={styles.buttonText}>Employee Form</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => router.push("/signin")}
-      >
-        <Text style={styles.buttonText}>Open Sign In</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => router.push("/signin")}
+        >
+          <Text style={styles.buttonText}>Sign In</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => router.push("/signup")}
-      >
-        <Text style={styles.buttonText}>Open Sign Up</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => router.push("/signup")}
+        >
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 }
 

@@ -2,12 +2,15 @@ import { Formik } from "formik";
 import { useState } from "react";
 import {
   Alert,
+  KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import * as Yup from "yup";
 
 const signInValidationSchema = Yup.object().shape({
@@ -23,90 +26,97 @@ export default function SignInScreen() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Sign In</Text>
-      <Text style={styles.subtitle}>Enter your account details below.</Text>
-
-      <Formik
-        initialValues={{
-          email: "",
-          password: "",
-        }}
-        validationSchema={signInValidationSchema}
-        onSubmit={(values, { resetForm }) => {
-          Alert.alert("Success", "Signed in successfully!");
-          console.log(values);
-          resetForm();
-        }}
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#f7f8fa" }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          touched,
-          isValid,
-          dirty,
-        }) => (
-          <View>
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={[
-                styles.input,
-                touched.email && errors.email ? styles.inputError : null,
-              ]}
-              placeholder="Enter email"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              value={values.email}
-              onChangeText={handleChange("email")}
-              onBlur={handleBlur("email")}
-            />
-            {touched.email && errors.email && (
-              <Text style={styles.errorText}>{errors.email}</Text>
-            )}
+        <View style={styles.container}>
+          <Text style={styles.title}>Sign In</Text>
+          <Text style={styles.subtitle}>Enter your account details below.</Text>
 
-            <Text style={styles.label}>Password</Text>
-            <View style={styles.passwordContainer}>
-              <TextInput
-                style={[
-                  styles.passwordInput,
-                  touched.password && errors.password ? styles.inputError : null,
-                ]}
-                placeholder="Enter password"
-                secureTextEntry={!showPassword}
-                value={values.password}
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-              />
-              <TouchableOpacity
-                onPress={() => setShowPassword(!showPassword)}
-                style={styles.toggleButton}
-              >
-                <Text style={styles.toggleText}>
-                  {showPassword ? "Hide" : "Show"}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            {touched.password && errors.password && (
-              <Text style={styles.errorText}>{errors.password}</Text>
-            )}
+          <Formik
+            initialValues={{
+              email: "",
+              password: "",
+            }}
+            validationSchema={signInValidationSchema}
+            onSubmit={(values, { resetForm }) => {
+              Alert.alert("Success", "Signed in successfully!");
+              console.log(values);
+              resetForm();
+            }}
+          >
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+              isValid,
+              dirty,
+            }) => (
+              <View>
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                  style={[
+                    styles.input,
+                    touched.email && errors.email ? styles.inputError : null,
+                  ]}
+                  placeholder="Enter email"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  value={values.email}
+                  onChangeText={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                />
+                {touched.email && errors.email && (
+                  <Text style={styles.errorText}>{errors.email}</Text>
+                )}
 
-            <TouchableOpacity
-              style={[
-                styles.button,
-                !(isValid && dirty) ? styles.buttonDisabled : null,
-              ]}
-              onPress={() => handleSubmit()}
-              disabled={!(isValid && dirty)}
-            >
-              <Text style={styles.buttonText}>Sign In</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </Formik>
-    </View>
+                <Text style={styles.label}>Password</Text>
+                <View style={styles.passwordContainer}>
+                  <TextInput
+                    style={[
+                      styles.passwordInput,
+                      touched.password && errors.password ? styles.inputError : null,
+                    ]}
+                    placeholder="Enter password"
+                    secureTextEntry={!showPassword}
+                    value={values.password}
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                  />
+                  <TouchableOpacity
+                    onPress={() => setShowPassword(!showPassword)}
+                    style={styles.toggleButton}
+                  >
+                    <Text style={styles.toggleText}>
+                      {showPassword ? "Hide" : "Show"}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                {touched.password && errors.password && (
+                  <Text style={styles.errorText}>{errors.password}</Text>
+                )}
+
+                <TouchableOpacity
+                  style={[
+                    styles.button,
+                    !(isValid && dirty) ? styles.buttonDisabled : null,
+                  ]}
+                  onPress={() => handleSubmit()}
+                  disabled={!(isValid && dirty)}
+                >
+                  <Text style={styles.buttonText}>Sign In</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </Formik>
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 

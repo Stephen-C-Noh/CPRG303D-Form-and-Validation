@@ -1,7 +1,8 @@
 import { Formik } from "formik";
-import React from "react";
 import {
   Alert,
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -9,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import * as Yup from "yup";
 
 const employeeValidationSchema = Yup.object().shape({
@@ -35,134 +37,143 @@ const employeeValidationSchema = Yup.object().shape({
 
 export default function EmployeeFormScreen() {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Employee Information Form</Text>
-      <Text style={styles.subtitle}>
-        Fill in all required employee details below.
-      </Text>
-
-      <Formik
-        initialValues={{
-          fullName: "",
-          employeeId: "",
-          email: "",
-          phoneNumber: "",
-          department: "",
-        }}
-        validationSchema={employeeValidationSchema}
-        onSubmit={(values, { resetForm }) => {
-          Alert.alert("Success", "Employee form submitted successfully!");
-          console.log(values);
-          resetForm();
-        }}
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#f7f8fa" }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          touched,
-          isValid,
-          dirty,
-        }) => (
-          <View>
-            <Text style={styles.label}>Full Name</Text>
-            <TextInput
-              style={[
-                styles.input,
-                touched.fullName && errors.fullName ? styles.inputError : null,
-              ]}
-              placeholder="Enter full name"
-              value={values.fullName}
-              onChangeText={handleChange("fullName")}
-              onBlur={handleBlur("fullName")}
-            />
-            {touched.fullName && errors.fullName && (
-              <Text style={styles.errorText}>{errors.fullName}</Text>
-            )}
+        <ScrollView contentContainerStyle={styles.container}>
+          <Text style={styles.title}>Employee Information Form</Text>
+          <Text style={styles.subtitle}>
+            Fill in all required employee details below.
+          </Text>
 
-            <Text style={styles.label}>Employee ID</Text>
-            <TextInput
-              style={[
-                styles.input,
-                touched.employeeId && errors.employeeId ? styles.inputError : null,
-              ]}
-              placeholder="e.g. A1234"
-              value={values.employeeId}
-              onChangeText={handleChange("employeeId")}
-              onBlur={handleBlur("employeeId")}
-            />
-            {touched.employeeId && errors.employeeId && (
-              <Text style={styles.errorText}>{errors.employeeId}</Text>
-            )}
+          <Formik
+            initialValues={{
+              fullName: "",
+              employeeId: "",
+              email: "",
+              phoneNumber: "",
+              department: "",
+            }}
+            validationSchema={employeeValidationSchema}
+            onSubmit={(values, { resetForm }) => {
+              Alert.alert("Success", "Employee form submitted successfully!");
+              console.log(values);
+              resetForm();
+            }}
+          >
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+              isValid,
+              dirty,
+            }) => (
+              <View>
+                <Text style={styles.label}>Full Name</Text>
+                <TextInput
+                  style={[
+                    styles.input,
+                    touched.fullName && errors.fullName ? styles.inputError : null,
+                  ]}
+                  placeholder="Enter full name"
+                  value={values.fullName}
+                  onChangeText={handleChange("fullName")}
+                  onBlur={handleBlur("fullName")}
+                />
+                {touched.fullName && errors.fullName && (
+                  <Text style={styles.errorText}>{errors.fullName}</Text>
+                )}
 
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={[
-                styles.input,
-                touched.email && errors.email ? styles.inputError : null,
-              ]}
-              placeholder="Enter email"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              value={values.email}
-              onChangeText={handleChange("email")}
-              onBlur={handleBlur("email")}
-            />
-            {touched.email && errors.email && (
-              <Text style={styles.errorText}>{errors.email}</Text>
-            )}
+                <Text style={styles.label}>Employee ID</Text>
+                <TextInput
+                  style={[
+                    styles.input,
+                    touched.employeeId && errors.employeeId
+                      ? styles.inputError
+                      : null,
+                  ]}
+                  placeholder="e.g. A1234"
+                  value={values.employeeId}
+                  onChangeText={handleChange("employeeId")}
+                  onBlur={handleBlur("employeeId")}
+                />
+                {touched.employeeId && errors.employeeId && (
+                  <Text style={styles.errorText}>{errors.employeeId}</Text>
+                )}
 
-            <Text style={styles.label}>Phone Number</Text>
-            <TextInput
-              style={[
-                styles.input,
-                touched.phoneNumber && errors.phoneNumber
-                  ? styles.inputError
-                  : null,
-              ]}
-              placeholder="Enter 10-digit phone number"
-              keyboardType="number-pad"
-              value={values.phoneNumber}
-              onChangeText={handleChange("phoneNumber")}
-              onBlur={handleBlur("phoneNumber")}
-            />
-            {touched.phoneNumber && errors.phoneNumber && (
-              <Text style={styles.errorText}>{errors.phoneNumber}</Text>
-            )}
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                  style={[
+                    styles.input,
+                    touched.email && errors.email ? styles.inputError : null,
+                  ]}
+                  placeholder="Enter email"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  value={values.email}
+                  onChangeText={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                />
+                {touched.email && errors.email && (
+                  <Text style={styles.errorText}>{errors.email}</Text>
+                )}
 
-            <Text style={styles.label}>Department</Text>
-            <TextInput
-              style={[
-                styles.input,
-                touched.department && errors.department
-                  ? styles.inputError
-                  : null,
-              ]}
-              placeholder="Enter department"
-              value={values.department}
-              onChangeText={handleChange("department")}
-              onBlur={handleBlur("department")}
-            />
-            {touched.department && errors.department && (
-              <Text style={styles.errorText}>{errors.department}</Text>
-            )}
+                <Text style={styles.label}>Phone Number</Text>
+                <TextInput
+                  style={[
+                    styles.input,
+                    touched.phoneNumber && errors.phoneNumber
+                      ? styles.inputError
+                      : null,
+                  ]}
+                  placeholder="Enter 10-digit phone number"
+                  keyboardType="number-pad"
+                  value={values.phoneNumber}
+                  onChangeText={handleChange("phoneNumber")}
+                  onBlur={handleBlur("phoneNumber")}
+                />
+                {touched.phoneNumber && errors.phoneNumber && (
+                  <Text style={styles.errorText}>{errors.phoneNumber}</Text>
+                )}
 
-            <TouchableOpacity
-              style={[
-                styles.button,
-                !(isValid && dirty) ? styles.buttonDisabled : null,
-              ]}
-              onPress={() => handleSubmit()}
-              disabled={!(isValid && dirty)}
-            >
-              <Text style={styles.buttonText}>Submit</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </Formik>
-    </ScrollView>
+                <Text style={styles.label}>Department</Text>
+                <TextInput
+                  style={[
+                    styles.input,
+                    touched.department && errors.department
+                      ? styles.inputError
+                      : null,
+                  ]}
+                  placeholder="Enter department"
+                  value={values.department}
+                  onChangeText={handleChange("department")}
+                  onBlur={handleBlur("department")}
+                />
+                {touched.department && errors.department && (
+                  <Text style={styles.errorText}>{errors.department}</Text>
+                )}
+
+                <TouchableOpacity
+                  style={[
+                    styles.button,
+                    !(isValid && dirty) ? styles.buttonDisabled : null,
+                  ]}
+                  onPress={() => handleSubmit()}
+                  disabled={!(isValid && dirty)}
+                >
+                  <Text style={styles.buttonText}>Submit</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </Formik>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
